@@ -1190,7 +1190,11 @@
   }
 
   .vote-count {
-    display: none;
+    min-width: 40px;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.45);
+    white-space: nowrap;
+    text-align: right;
   }
 
   .result-percentage {
