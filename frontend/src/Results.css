@@ -1190,11 +1190,7 @@
   }
 
   .vote-count {
-    min-width: 40px;
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.45);
-    white-space: nowrap;
-    text-align: right;
+    display: none;
   }
 
   .result-percentage {
@@ -1241,37 +1237,3 @@
     color: #f59e0b;
 }
 
-/* FORCE VOTE COUNT ON MOBILE */
-@media (max-width: 520px) {
-  .result-stat {
-    width: 100px !important;
-    min-width: 100px !important;
-    flex: 0 0 100px !important;
-    display: flex !important;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 6px;
-  }
-
-  .result-stat .result-percentage {
-    display: block !important;
-    width: 35px;
-    min-width: 35px;
-    flex-shrink: 0;
-    text-align: right;
-  }
-
-  .result-stat .vote-count {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-
-    width: 55px !important;
-    min-width: 55px !important;
-    flex-shrink: 0;
-
-    font-size: 11px;
-    white-space: nowrap;
-    text-align: right;
-  }
-}
