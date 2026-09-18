@@ -13,18 +13,16 @@ import (
 
 var MongoClient *mongo.Client
 
-
-
 func ConnectMongoDB() error {
-	// Load environment variables from .env
+	// Load .env locally if it exists.
+	// On Render, environment variables are provided directly.
 	_ = godotenv.Load()
-
 
 	// Get MongoDB connection string
 	uri := os.Getenv("MONGO_URI")
 
 	if uri == "" {
-		return fmt.Errorf("MONGO_URI is not set in .env")
+		return fmt.Errorf("MONGO_URI is not set in environment variables")
 	}
 
 	// Create MongoDB client
@@ -33,6 +31,8 @@ func ConnectMongoDB() error {
 	opts := options.Client().
 		ApplyURI(uri).
 		SetServerAPIOptions(serverAPI)
+
+	var err error
 
 	MongoClient, err = mongo.Connect(opts)
 
