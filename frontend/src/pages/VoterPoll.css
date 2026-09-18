@@ -15,7 +15,7 @@
       rgba(5, 8, 15, 0.5),
       rgba(5, 8, 15, 0.72)
     ),
-    url("/bgi1.png");
+    url("./bgi1.png");
 
   background-size: cover;
   background-position: center;
@@ -39,12 +39,7 @@
 
   border-radius: 28px;
 
-  background:
-    linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.14),
-      rgba(255, 255, 255, 0.045)
-    );
+ background: rgba(5, 5, 10, 0.88);
 
   border:
     1px solid rgba(255, 255, 255, 0.2);
