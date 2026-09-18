@@ -1240,3 +1240,20 @@
 .status-expired {
     color: #f59e0b;
 }
+
+/* FORCE VOTE COUNT ON MOBILE */
+@media (max-width: 520px) {
+  .result-stat {
+    min-width: 85px;
+    gap: 5px;
+  }
+
+  .result-stat .vote-count {
+    display: inline !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    min-width: 40px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+}
