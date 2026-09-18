@@ -17,10 +17,8 @@ var MongoClient *mongo.Client
 
 func ConnectMongoDB() error {
 	// Load environment variables from .env
-	err := godotenv.Load()
-	if err != nil {
-		return fmt.Errorf("error loading .env file: %v", err)
-	}
+	_ = godotenv.Load()
+
 
 	// Get MongoDB connection string
 	uri := os.Getenv("MONGO_URI")
