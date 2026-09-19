@@ -71,9 +71,7 @@ function Results() {
 
   const token = localStorage.getItem("token");
 
-  // ==================================================
-  // FETCH RESULTS
-  // ==================================================
+  
 
   const fetchResults = async () => {
     try {
@@ -94,7 +92,7 @@ function Results() {
 
       setPoll(data.poll);
 
-      // Backend returns "results"
+      
       setResults(data.results || []);
 
       setTotalVotes(data.totalVotes || 0);
@@ -115,10 +113,7 @@ function Results() {
     fetchResults();
   }, [shareToken]);
 
-  // ==================================================
-  // WEBSOCKET
-  // ==================================================
-
+  
   useEffect(() => {
     if (!shareToken) return;
 
@@ -167,9 +162,7 @@ function Results() {
     return () => websocket.close();
   }, [shareToken]);
 
-  // ==================================================
-  // CURRENT TIME
-  // ==================================================
+  
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -179,9 +172,7 @@ function Results() {
     return () => clearInterval(timer);
   }, []);
 
-  // ==================================================
-  // AUTOMATIC EXPIRATION CHECK
-  // ==================================================
+  
 
   useEffect(() => {
     if (!poll?.expiresAt) return;
@@ -202,9 +193,7 @@ function Results() {
     }
   }, [currentTime, poll]);
 
-  // ==================================================
-  // WINNER
-  // ==================================================
+  
 
   const winningResult = useMemo(() => {
     if (!results.length) return null;
@@ -246,9 +235,7 @@ function Results() {
         OPTION_COLORS.length
     ];
 
-  // ==================================================
-  // EXPIRATION TEXT
-  // ==================================================
+ 
 
   const expirationText = useMemo(() => {
     if (poll?.status === "closed") {
@@ -303,9 +290,7 @@ function Results() {
     return `Ends in ${minutes}m`;
   }, [poll, currentTime]);
 
-  // ==================================================
-  // POLL STATUS
-  // ==================================================
+  
 
   const pollStatus = useMemo(() => {
     if (!poll) {
@@ -337,9 +322,7 @@ function Results() {
     return "active";
   }, [poll, currentTime]);
 
-  // ==================================================
-  // SHARE
-  // ==================================================
+ 
 
   const shareLink =
     `${window.location.origin}/poll/${shareToken}`;
@@ -367,9 +350,7 @@ function Results() {
     }
   };
 
-  // ==================================================
-  // OPEN EXPIRATION MODAL
-  // ==================================================
+ 
 
   const openExpirationModal = () => {
     if (poll?.expiresAt) {
@@ -397,9 +378,7 @@ function Results() {
     setShowExpirationModal(true);
   };
 
-  // ==================================================
-  // SAVE EXPIRATION
-  // ==================================================
+  
 
   const handleChangeExpiration =
     async () => {
@@ -507,9 +486,7 @@ function Results() {
       }
     };
 
-  // ==================================================
-  // REMOVE EXPIRATION
-  // ==================================================
+  
 
   const removeExpiration =
     async () => {
@@ -579,9 +556,7 @@ function Results() {
       }
     };
 
-  // ==================================================
-  // CLOSE POLL
-  // ==================================================
+  
 
   const handleClosePoll =
     async () => {
@@ -648,9 +623,7 @@ function Results() {
       }
     };
 
-  // ==================================================
-  // OPEN POLL
-  // ==================================================
+  
 
   const handleOpenPoll =
     async () => {
@@ -712,9 +685,7 @@ function Results() {
       }
     };
 
-  // ==================================================
-  // LOADING
-  // ==================================================
+  
 
   if (loading) {
     return (
@@ -732,9 +703,7 @@ function Results() {
     );
   }
 
-  // ==================================================
-  // ERROR
-  // ==================================================
+  
 
   if (message && !poll) {
     return (
@@ -761,9 +730,7 @@ function Results() {
     );
   }
 
-  // ==================================================
-  // PAGE
-  // ==================================================
+  
 
   return (
     <div className="results-page">
