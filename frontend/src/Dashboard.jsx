@@ -54,9 +54,7 @@ function Dashboard() {
      navigate(`/results/${poll.shareToken}`);
   };
 
-  // -----------------------------------
-  // GET POLL STATUS
-  // -----------------------------------
+  
 
   const getPollStatus = (poll) => {
     if (poll.status === "closed") {
@@ -76,9 +74,7 @@ function Dashboard() {
     return "active";
   };
 
-  // -----------------------------------
-  // DELETE POLL
-  // -----------------------------------
+  
 
   const handleDeletePoll = async (poll) => {
     const confirmed = window.confirm(
@@ -114,7 +110,7 @@ function Dashboard() {
         return;
       }
 
-      // Remove deleted poll from the dashboard immediately
+      
       setPolls((currentPolls) =>
         currentPolls.filter(
           (currentPoll) =>
