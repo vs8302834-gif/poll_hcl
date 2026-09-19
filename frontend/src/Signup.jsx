@@ -40,6 +40,9 @@ function Signup() {
 
       const data = await response.json();
 
+      
+      console.log("Signup response:", response.status, data);
+
       if (!response.ok) {
         setMessage(data.error || "Signup failed");
         return;
