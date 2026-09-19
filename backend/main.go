@@ -10,29 +10,29 @@ import (
 
 func main() {
 
-	// Connect to MongoDB
+	
 	err := ConnectMongoDB()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Connect to Redis
+	
 	err = ConnectRedis()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Initialize MongoDB collections
+	
 	userCollection = MongoClient.Database("hcl_poll").Collection("users")
 	pollCollection = MongoClient.Database("hcl_poll").Collection("polls")
 	voteCollection = MongoClient.Database("hcl_poll").Collection("votes")
 
-	// Start Redis realtime subscriber
+	
 	StartRedisSubscriber()
 
 	router := gin.Default()
 
-	// CORS
+	
 	router.Use(func(c *gin.Context) {
 
 		frontendURL := os.Getenv("FRONTEND_URL")
@@ -69,9 +69,7 @@ func main() {
 		c.Next()
 	})
 
-	// =========================
-	// Public routes
-	// =========================
+	
 
 	router.GET("/api/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
@@ -82,71 +80,65 @@ func main() {
 	router.POST("/api/signup", Signup)
 	router.POST("/api/login", Login)
 
-	// =========================
-	// Protected routes
-	// =========================
+	
 
 	protected := router.Group("/api")
 	protected.Use(AuthMiddleware())
 
-	// Create poll
+	
 	protected.POST("/polls", CreatePoll)
 
-	// Get creator's polls
+	
 	protected.GET("/polls", GetMyPolls)
 
-	// Delete poll
+	
 	protected.DELETE("/polls/:shareToken", DeletePoll)
 
-	// Change poll expiration
+	
 	protected.PUT(
 		"/polls/:shareToken/expiration",
 		ChangePollExpiration,
 	)
 
-	// Close poll
+	
 	protected.POST(
 		"/polls/:shareToken/close",
 		ClosePoll,
 	)
 
-	// Open/Reopen poll
+	
 	protected.POST(
 		"/polls/:shareToken/open",
 		OpenPoll,
 	)
 
-	// =========================
-	// Public poll routes
-	// =========================
+	
 
-	// Get poll for voters
+	
 	router.GET(
 		"/api/polls/share/:shareToken",
 		GetPollByShareToken,
 	)
 
-	// Submit vote
+	
 	router.POST(
 		"/api/polls/share/:shareToken/vote",
 		VotePoll,
 	)
 
-	// Get poll results
+	
 	router.GET(
 		"/api/polls/share/:shareToken/results",
 		GetPollResults,
 	)
 
-	// WebSocket realtime connection
+	
 	router.GET(
 		"/api/polls/share/:shareToken/ws",
 		HandleWebSocket,
 	)
 
-	// =========================
-	// Render PORT
-	// =========================
+	
 
 	port := os.Getenv("PORT")
 
