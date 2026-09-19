@@ -16,9 +16,7 @@ import (
 	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
-// ==================================================
-// WEBSOCKET CONFIGURATION
-// ==================================================
+
 
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
@@ -26,24 +24,18 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
-// ==================================================
-// CONNECTED WEBSOCKET CLIENTS
-// ==================================================
+
 
 var clients = make(map[string]map[*websocket.Conn]bool)
 var clientsMutex sync.Mutex
 
-// ==================================================
-// WEBSOCKET CONNECTION
-// ==================================================
+
 
 func HandleWebSocket(c *gin.Context) {
 
 	shareToken := c.Param("shareToken")
 
-	// -----------------------------------
-	// CHECK POLL EXISTS
-	// -----------------------------------
+	
 
 	var poll models.Poll
 
@@ -63,9 +55,7 @@ func HandleWebSocket(c *gin.Context) {
 		return
 	}
 
-	// -----------------------------------
-	// UPGRADE HTTP CONNECTION TO WEBSOCKET
-	// -----------------------------------
+	
 
 	conn, err := upgrader.Upgrade(
 		c.Writer,
@@ -88,9 +78,7 @@ func HandleWebSocket(c *gin.Context) {
 		shareToken,
 	)
 
-	// -----------------------------------
-	// ADD CLIENT TO POLL'S CLIENT LIST
-	// -----------------------------------
+	
 
 	clientsMutex.Lock()
 
@@ -102,9 +90,7 @@ func HandleWebSocket(c *gin.Context) {
 
 	clientsMutex.Unlock()
 
-	// -----------------------------------
-	// REMOVE CLIENT WHEN DISCONNECTED
-	// -----------------------------------
+	
 
 	defer func() {
 
@@ -130,9 +116,7 @@ func HandleWebSocket(c *gin.Context) {
 
 	}()
 
-	// -----------------------------------
-	// KEEP CONNECTION ALIVE
-	// -----------------------------------
+	
 
 	for {
 
@@ -144,18 +128,14 @@ func HandleWebSocket(c *gin.Context) {
 	}
 }
 
-// ==================================================
-// BROADCAST DATA TO CONNECTED CLIENTS
-// ==================================================
+
 
 func BroadcastPollResults(
 	shareToken string,
 	data interface{},
 ) {
 
-	// -----------------------------------
-	// CONVERT DATA TO JSON
-	// -----------------------------------
+	
 
 	message, err := json.Marshal(data)
 
@@ -169,9 +149,7 @@ func BroadcastPollResults(
 		return
 	}
 
-	// -----------------------------------
-	// LOCK CLIENT LIST
-	// -----------------------------------
+	
 
 	clientsMutex.Lock()
 	defer clientsMutex.Unlock()
@@ -183,9 +161,7 @@ func BroadcastPollResults(
 		len(clients[shareToken]),
 	)
 
-	// -----------------------------------
-	// SEND UPDATE TO ALL CLIENTS
-	// -----------------------------------
+	
 
 	for conn := range clients[shareToken] {
 
@@ -211,9 +187,7 @@ func BroadcastPollResults(
 	}
 }
 
-// ==================================================
-// REDIS SUBSCRIBER
-// ==================================================
+
 
 func StartRedisSubscriber() {
 
@@ -221,9 +195,7 @@ func StartRedisSubscriber() {
 
 		ctx := context.Background()
 
-		// -----------------------------------
-		// SUBSCRIBE TO ALL POLL CHANNELS
-		// -----------------------------------
+		
 
 		pubsub := RedisClient.PSubscribe(
 			ctx,
@@ -240,9 +212,7 @@ func StartRedisSubscriber() {
 			"Listening for channels: poll:*",
 		)
 
-		// -----------------------------------
-		// LISTEN FOR REDIS EVENTS
-		// -----------------------------------
+		
 
 		for {
 
@@ -265,9 +235,7 @@ func StartRedisSubscriber() {
 				message.Payload,
 			)
 
-			// -----------------------------------
-			// GET SHARE TOKEN FROM CHANNEL
-			// -----------------------------------
+			
 
 			shareToken := strings.TrimPrefix(
 				message.Channel,
@@ -283,9 +251,7 @@ func StartRedisSubscriber() {
 				continue
 			}
 
-			// -----------------------------------
-			// GET CURRENT POLL FROM MONGODB
-			// -----------------------------------
+
 
 			var poll models.Poll
 
@@ -306,9 +272,7 @@ func StartRedisSubscriber() {
 				continue
 			}
 
-			// -----------------------------------
-			// AUTOMATIC EXPIRATION
-			// -----------------------------------
+			
 
 			if poll.Status == "active" &&
 				poll.ExpiresAt != nil {
@@ -341,9 +305,7 @@ func StartRedisSubscriber() {
 				}
 			}
 
-			// -----------------------------------
-			// BUILD LATEST POLL RESULTS
-			// -----------------------------------
+			
 
 			results, err := BuildPollResults(
 				shareToken,
@@ -359,9 +321,7 @@ func StartRedisSubscriber() {
 				continue
 			}
 
-			// -----------------------------------
-			// PREPARE WEBSOCKET RESPONSE
-			// -----------------------------------
+			
 
 			websocketData := map[string]interface{}{
 
@@ -382,9 +342,7 @@ func StartRedisSubscriber() {
 				poll.Status,
 			)
 
-			// -----------------------------------
-			// BROADCAST UPDATE
-			// -----------------------------------
+			
 
 			BroadcastPollResults(
 				shareToken,
