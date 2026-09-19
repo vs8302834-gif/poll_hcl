@@ -45,7 +45,7 @@ func VotePoll(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	// Find poll
+	
 	var poll models.Poll
 
 	err := pollCollection.FindOne(
@@ -67,7 +67,7 @@ func VotePoll(c *gin.Context) {
 		return
 	}
 
-	// Check expiration
+	
 	if poll.Status == "active" && poll.ExpiresAt != nil && time.Now().After(*poll.ExpiresAt) {
 		poll.Status = "expired"
 
@@ -90,7 +90,7 @@ func VotePoll(c *gin.Context) {
 		}
 	}
 
-	// Poll must be active
+	
 	if poll.Status != "active" {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "This poll is no longer active",
@@ -98,7 +98,7 @@ func VotePoll(c *gin.Context) {
 		return
 	}
 
-	// Check whether option belongs to this poll
+	
 	optionExists := false
 
 	for _, option := range poll.Options {
@@ -115,7 +115,7 @@ func VotePoll(c *gin.Context) {
 		return
 	}
 
-	// Check duplicate vote
+	
 	var existingVote models.Vote
 
 	err = voteCollection.FindOne(
@@ -140,7 +140,7 @@ func VotePoll(c *gin.Context) {
 		return
 	}
 
-	// Create vote
+	
 	vote := models.Vote{
 		ID:        bson.NewObjectID(),
 		PollID:    poll.ID,
