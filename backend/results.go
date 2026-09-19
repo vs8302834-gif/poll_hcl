@@ -47,9 +47,7 @@ func BuildPollResults(shareToken string) (*PollResults, error) {
 
 	var totalVotes int64
 
-	// ==================================================
-	// COUNT VOTES FOR EVERY OPTION
-	// ==================================================
+	
 
 	for _, option := range poll.Options {
 
@@ -75,9 +73,7 @@ func BuildPollResults(shareToken string) (*PollResults, error) {
 		})
 	}
 
-	// ==================================================
-	// CALCULATE PERCENTAGES
-	// ==================================================
+	
 
 	for i := range results {
 
@@ -91,9 +87,7 @@ func BuildPollResults(shareToken string) (*PollResults, error) {
 		}
 	}
 
-	// ==================================================
-	// FIND WINNER
-	// ==================================================
+	
 
 	var winner *OptionResult
 
@@ -106,7 +100,7 @@ func BuildPollResults(shareToken string) (*PollResults, error) {
 		}
 	}
 
-	// No winner when there are no votes
+	
 	if totalVotes == 0 {
 		winner = nil
 	}
@@ -118,9 +112,7 @@ func BuildPollResults(shareToken string) (*PollResults, error) {
 	}, nil
 }
 
-// ==================================================
-// GET POLL RESULTS
-// ==================================================
+
 
 func GetPollResults(c *gin.Context) {
 
@@ -139,9 +131,7 @@ func GetPollResults(c *gin.Context) {
 	)
 	defer cancel()
 
-	// ==================================================
-	// GET POLL
-	// ==================================================
+	
 
 	var poll models.Poll
 
@@ -165,9 +155,7 @@ func GetPollResults(c *gin.Context) {
 		return
 	}
 
-	// ==================================================
-	// AUTOMATICALLY MARK EXPIRED
-	// ==================================================
+	
 
 	if poll.Status == "active" &&
 		poll.ExpiresAt != nil &&
@@ -196,9 +184,7 @@ func GetPollResults(c *gin.Context) {
 		}
 	}
 
-	// ==================================================
-	// BUILD RESULTS
-	// ==================================================
+	
 
 	results, err := BuildPollResults(shareToken)
 
@@ -209,9 +195,7 @@ func GetPollResults(c *gin.Context) {
 		return
 	}
 
-	// ==================================================
-	// RESPONSE
-	// ==================================================
+	
 
 	c.JSON(http.StatusOK, gin.H{
 
@@ -227,7 +211,7 @@ func GetPollResults(c *gin.Context) {
 
 		"winner": results.Winner,
 
-		// Frontend expects "results"
+		
 		"results": results.Options,
 
 		// Keep "options" too for compatibility
