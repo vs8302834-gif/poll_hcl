@@ -115,13 +115,21 @@ function Results() {
 
   
   useEffect(() => {
-    if (!shareToken) return;
+  if (!shareToken) return;
 
-    const websocket = new WebSocket(
+  let websocket;
+  let reconnectTimer;
+  let isUnmounted = false;
+
+  const connectWebSocket = () => {
+    if (isUnmounted) return;
+
+    websocket = new WebSocket(
       `${WS_URL}/api/polls/share/${shareToken}/ws`
     );
 
     websocket.onopen = () => {
+      console.log("WebSocket connected");
       setLive(true);
     };
 
@@ -144,23 +152,37 @@ function Results() {
           }));
         }
       } catch (error) {
-        console.error(
-          "WebSocket message error:",
-          error
-        );
+        console.error("WebSocket message error:", error);
       }
     };
 
     websocket.onerror = () => {
+      console.error("WebSocket connection error");
       setLive(false);
     };
 
     websocket.onclose = () => {
       setLive(false);
-    };
 
-    return () => websocket.close();
-  }, [shareToken]);
+      if (!isUnmounted) {
+        reconnectTimer = setTimeout(() => {
+          connectWebSocket();
+        }, 1000);
+      }
+    };
+  };
+
+  connectWebSocket();
+
+  return () => {
+    isUnmounted = true;
+    clearTimeout(reconnectTimer);
+
+    if (websocket) {
+      websocket.close();
+    }
+  };
+}, [shareToken]);
 
   
 
