@@ -1,6 +1,4 @@
-/* =========================
-   CREATE POLL PAGE
-========================= */
+
 
 .create-page {
     min-height: 100vh;
@@ -81,9 +79,7 @@
 }
 
 
-/* =========================
-   HEADER
-========================= */
+
 
 .create-header {
     display: flex;
@@ -135,9 +131,7 @@
 }
 
 
-/* =========================
-   FORM
-========================= */
+
 
 .create-form-group {
     display: flex;
@@ -193,9 +187,7 @@
 }
 
 
-/* =========================
-   OPTIONS
-========================= */
+
 
 .options-section {
     display: flex;
@@ -280,9 +272,7 @@
 }
 
 
-/* =========================
-   REMOVE OPTION
-========================= */
+
 
 .remove-btn {
     background: rgba(255, 255, 255, 0.05);
@@ -324,9 +314,7 @@
 }
 
 
-/* =========================
-   EXPIRATION
-========================= */
+
 
 .expiration-section {
     margin-top: 10px;
@@ -404,9 +392,7 @@
 }
 
 
-/* =========================
-   TIME INPUT
-========================= */
+
 
 .time-input-wrapper {
     max-height: 0;
@@ -434,9 +420,7 @@ input[type="datetime-local"] {
 }
 
 
-/* =========================
-   MESSAGE
-========================= */
+
 
 .create-message {
     text-align: center;
@@ -449,9 +433,7 @@ input[type="datetime-local"] {
 }
 
 
-/* =========================
-   CREATE BUTTON
-========================= */
+
 
 .submit-btn {
     width: 100%;
