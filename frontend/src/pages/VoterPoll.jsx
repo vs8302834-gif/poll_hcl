@@ -42,9 +42,9 @@ function VoterPoll() {
   const [error, setError] = useState("");
   const [currentTime, setCurrentTime] = useState(new Date());
 
-  // ==================================================
+  
   // FETCH POLL
-  // ==================================================
+  
 
   useEffect(() => {
 
@@ -85,9 +85,9 @@ function VoterPoll() {
 
   }, [shareToken]);
 
-  // ==================================================
+  
   // REALTIME WEBSOCKET
-  // ==================================================
+ 
 
   useEffect(() => {
 
@@ -117,9 +117,9 @@ function VoterPoll() {
           data
         );
 
-        // -----------------------------------
+        
         // UPDATE POLL STATUS / EXPIRATION
-        // -----------------------------------
+        
 
         if (data.poll) {
 
@@ -166,9 +166,9 @@ function VoterPoll() {
 
   }, [shareToken]);
 
-  // ==================================================
+  
   // UPDATE CLOCK
-  // ==================================================
+ 
 
   useEffect(() => {
 
@@ -186,9 +186,9 @@ function VoterPoll() {
 
   }, []);
 
-  // ==================================================
+ 
   // AUTOMATIC EXPIRATION
-  // ==================================================
+  
 
   useEffect(() => {
 
@@ -219,9 +219,9 @@ function VoterPoll() {
 
   }, [currentTime, poll]);
 
-  // ==================================================
+  
   // TIMER TEXT
-  // ==================================================
+  
 
   const getTimerText = () => {
 
@@ -229,8 +229,7 @@ function VoterPoll() {
       return null;
     }
 
-    // IMPORTANT:
-    // Closed poll must NOT continue countdown.
+    
     if (poll.status === "closed") {
       return "Closed";
     }
@@ -291,9 +290,9 @@ function VoterPoll() {
     ).padStart(2, "0")}`;
   };
 
-  // ==================================================
+  
   // POLL STATUS
-  // ==================================================
+ 
 
   const getPollStatus = () => {
 
@@ -301,7 +300,7 @@ function VoterPoll() {
       return "active";
     }
 
-    // Server status takes priority.
+    
     if (poll.status === "closed") {
       return "closed";
     }
@@ -329,9 +328,9 @@ function VoterPoll() {
   const timerText =
     getTimerText();
 
-  // ==================================================
+  
   // VOTE
-  // ==================================================
+  
 
   const handleVote = async () => {
 
@@ -413,9 +412,7 @@ function VoterPoll() {
     }
   };
 
-  // ==================================================
-  // LOADING
-  // ==================================================
+  
 
   if (loading) {
 
@@ -430,9 +427,7 @@ function VoterPoll() {
     );
   }
 
-  // ==================================================
-  // ERROR
-  // ==================================================
+  
 
   if (error || !poll) {
 
@@ -460,9 +455,7 @@ function VoterPoll() {
     );
   }
 
-  // ==================================================
-  // UI
-  // ==================================================
+  
 
   return (
     <div className="voter-page">
