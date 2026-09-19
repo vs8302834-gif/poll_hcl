@@ -17,9 +17,7 @@ import (
 
 var pollCollection *mongo.Collection
 
-// ==================================================
-// CREATE POLL
-// ==================================================
+
 
 type CreatePollRequest struct {
 	Question  string   `json:"question"`
@@ -38,9 +36,7 @@ func CreatePoll(c *gin.Context) {
 		return
 	}
 
-	// -----------------------------------
-	// VALIDATE QUESTION
-	// -----------------------------------
+	
 
 	req.Question = strings.TrimSpace(req.Question)
 
@@ -51,9 +47,7 @@ func CreatePoll(c *gin.Context) {
 		return
 	}
 
-	// -----------------------------------
-	// VALIDATE OPTIONS
-	// -----------------------------------
+	
 
 	if len(req.Options) < 2 {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -81,9 +75,7 @@ func CreatePoll(c *gin.Context) {
 		})
 	}
 
-	// -----------------------------------
-	// OPTIONAL EXPIRATION
-	// -----------------------------------
+	
 
 	var expiresAt *time.Time
 
@@ -111,9 +103,7 @@ func CreatePoll(c *gin.Context) {
 		expiresAt = &parsedExpiration
 	}
 
-	// -----------------------------------
-	// GET LOGGED-IN USER
-	// -----------------------------------
+	
 
 	userIDString, exists := c.Get("userId")
 
@@ -135,9 +125,7 @@ func CreatePoll(c *gin.Context) {
 		return
 	}
 
-	// -----------------------------------
-	// CREATE POLL
-	// -----------------------------------
+	
 
 	now := time.Now()
 
@@ -174,9 +162,7 @@ func CreatePoll(c *gin.Context) {
 	})
 }
 
-// ==================================================
-// GET MY POLLS
-// ==================================================
+
 
 func GetMyPolls(c *gin.Context) {
 
@@ -235,9 +221,7 @@ func GetMyPolls(c *gin.Context) {
 		polls = []models.Poll{}
 	}
 
-	// -----------------------------------
-	// UPDATE EXPIRED POLLS
-	// -----------------------------------
+	
 
 	for i := range polls {
 
@@ -267,9 +251,7 @@ func GetMyPolls(c *gin.Context) {
 	})
 }
 
-// ==================================================
-// GET POLL BY SHARE TOKEN
-// ==================================================
+
 
 func GetPollByShareToken(c *gin.Context) {
 
@@ -312,9 +294,7 @@ func GetPollByShareToken(c *gin.Context) {
 		return
 	}
 
-	// -----------------------------------
-	// AUTOMATICALLY MARK EXPIRED POLL
-	// -----------------------------------
+	
 
 	if poll.Status == "active" &&
 		poll.ExpiresAt != nil &&
@@ -348,9 +328,7 @@ func GetPollByShareToken(c *gin.Context) {
 	})
 }
 
-// ==================================================
-// CHANGE POLL EXPIRATION
-// ==================================================
+
 
 type ChangeExpirationRequest struct {
 	ExpiresAt string `json:"expiresAt"`
@@ -367,9 +345,7 @@ func ChangePollExpiration(c *gin.Context) {
 		return
 	}
 
-	// -----------------------------------
-	// GET LOGGED-IN USER
-	// -----------------------------------
+	
 
 	userIDValue, exists := c.Get("userId")
 
@@ -391,9 +367,7 @@ func ChangePollExpiration(c *gin.Context) {
 		return
 	}
 
-	// -----------------------------------
-	// FIND POLL
-	// -----------------------------------
+	
 
 	ctx, cancel := context.WithTimeout(
 		context.Background(),
@@ -426,9 +400,7 @@ func ChangePollExpiration(c *gin.Context) {
 		return
 	}
 
-	// -----------------------------------
-	// CLOSED POLLS CANNOT BE MODIFIED
-	// -----------------------------------
+	
 
 	if poll.Status == "closed" {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -446,9 +418,7 @@ func ChangePollExpiration(c *gin.Context) {
 		return
 	}
 
-	// -----------------------------------
-	// PARSE NEW EXPIRATION
-	// -----------------------------------
+	
 
 	var newExpiration *time.Time
 
@@ -476,9 +446,7 @@ func ChangePollExpiration(c *gin.Context) {
 		newExpiration = &parsedExpiration
 	}
 
-	// -----------------------------------
-	// UPDATE POLL
-	// -----------------------------------
+	
 
 	now := time.Now()
 
@@ -511,9 +479,7 @@ func ChangePollExpiration(c *gin.Context) {
 	poll.Status = "active"
 	poll.UpdatedAt = now
 
-	// -----------------------------------
-	// REALTIME NOTIFICATION
-	// -----------------------------------
+	
 
 	if err = RedisClient.Publish(
 		ctx,
@@ -529,9 +495,7 @@ func ChangePollExpiration(c *gin.Context) {
 	})
 }
 
-// ==================================================
-// CLOSE POLL
-// ==================================================
+
 
 func ClosePoll(c *gin.Context) {
 
@@ -544,9 +508,7 @@ func ClosePoll(c *gin.Context) {
 		return
 	}
 
-	// -----------------------------------
-	// GET LOGGED-IN USER
-	// -----------------------------------
+	
 
 	userIDValue, exists := c.Get("userId")
 
@@ -574,9 +536,7 @@ func ClosePoll(c *gin.Context) {
 	)
 	defer cancel()
 
-	// -----------------------------------
-	// FIND POLL
-	// -----------------------------------
+	
 
 	var poll models.Poll
 
@@ -603,9 +563,7 @@ func ClosePoll(c *gin.Context) {
 		return
 	}
 
-	// -----------------------------------
-	// CHECK ALREADY CLOSED
-	// -----------------------------------
+	
 
 	if poll.Status == "closed" {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -614,9 +572,7 @@ func ClosePoll(c *gin.Context) {
 		return
 	}
 
-	// -----------------------------------
-	// CLOSE POLL
-	// -----------------------------------
+	
 
 	now := time.Now()
 
@@ -641,9 +597,7 @@ func ClosePoll(c *gin.Context) {
 		return
 	}
 
-	// -----------------------------------
-	// REALTIME NOTIFICATION
-	// -----------------------------------
+	
 
 	if err = RedisClient.Publish(
 		ctx,
@@ -658,9 +612,7 @@ func ClosePoll(c *gin.Context) {
 	})
 }
 
-// ==================================================
-// DELETE POLL
-// ==================================================
+
 
 func DeletePoll(c *gin.Context) {
 
@@ -673,9 +625,7 @@ func DeletePoll(c *gin.Context) {
 		return
 	}
 
-	// -----------------------------------
-	// GET LOGGED-IN USER
-	// -----------------------------------
+	
 
 	userIDValue, exists := c.Get("userId")
 
@@ -703,9 +653,7 @@ func DeletePoll(c *gin.Context) {
 	)
 	defer cancel()
 
-	// -----------------------------------
-	// FIND POLL
-	// -----------------------------------
+	
 
 	var poll models.Poll
 
@@ -726,9 +674,7 @@ func DeletePoll(c *gin.Context) {
 		return
 	}
 
-	// -----------------------------------
-	// DELETE VOTES
-	// -----------------------------------
+	
 
 	_, err = voteCollection.DeleteMany(
 		ctx,
@@ -746,9 +692,7 @@ func DeletePoll(c *gin.Context) {
 		return
 	}
 
-	// -----------------------------------
-	// DELETE POLL
-	// -----------------------------------
+	
 
 	_, err = pollCollection.DeleteOne(
 		ctx,
@@ -772,9 +716,7 @@ func DeletePoll(c *gin.Context) {
 	})
 }
 
-// ==================================================
-// OPEN POLL
-// ==================================================
+
 
 func OpenPoll(c *gin.Context) {
 
@@ -787,10 +729,7 @@ func OpenPoll(c *gin.Context) {
 		return
 	}
 
-	// -----------------------------------
-	// GET LOGGED-IN USER
-	// -----------------------------------
-
+	
 	userIDValue, exists := c.Get("userId")
 
 	if !exists {
@@ -817,9 +756,7 @@ func OpenPoll(c *gin.Context) {
 	)
 	defer cancel()
 
-	// -----------------------------------
-	// FIND POLL
-	// -----------------------------------
+	
 
 	var poll models.Poll
 
@@ -846,9 +783,7 @@ func OpenPoll(c *gin.Context) {
 		return
 	}
 
-	// -----------------------------------
-	// CHECK EXPIRATION
-	// -----------------------------------
+	
 
 	if poll.ExpiresAt != nil &&
 		time.Now().After(*poll.ExpiresAt) {
@@ -859,9 +794,7 @@ func OpenPoll(c *gin.Context) {
 		return
 	}
 
-	// -----------------------------------
-	// OPEN POLL
-	// -----------------------------------
+	
 
 	now := time.Now()
 
@@ -886,9 +819,7 @@ func OpenPoll(c *gin.Context) {
 		return
 	}
 
-	// -----------------------------------
-	// REALTIME NOTIFICATION
-	// -----------------------------------
+	
 
 	if err = RedisClient.Publish(
 		ctx,
