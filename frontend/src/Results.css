@@ -21,9 +21,7 @@
 }
 
 
-/* =================================
-   MAIN GLASS CARD
-================================= */
+
 
 .results-main-card {
     width: 100%;
@@ -48,7 +46,7 @@
 }
 
 
-/* Glass shine */
+
 
 .results-main-card::before {
   content: "";
@@ -72,9 +70,7 @@
 }
 
 
-/* =================================
-   TOP BAR
-================================= */
+
 
 .results-top-bar {
   display: flex;
@@ -114,9 +110,7 @@
 }
 
 
-/* =================================
-   LIVE
-================================= */
+
 
 .results-live-area {
   display: flex;
@@ -149,9 +143,7 @@
 }
 
 
-/* =================================
-   TIMER
-================================= */
+
 
 .timer-badge {
   padding: 9px 12px;
@@ -171,9 +163,7 @@
 }
 
 
-/* =================================
-   WINNING AREA
-================================= */
+
 
 .winning-display {
   height: 300px;
@@ -191,9 +181,7 @@
 }
 
 
-/* =================================
-   NEON RING
-================================= */
+
 
 .ring-svg {
   position: absolute;
@@ -241,7 +229,7 @@
 }
 
 
-/* Restore neon animation */
+
 
 @keyframes neonPulse {
 
@@ -271,9 +259,7 @@
 }
 
 
-/* =================================
-   WINNER TEXT
-================================= */
+
 
 .winning-percentage {
   position: relative;
@@ -332,19 +318,17 @@
     0 0 7px var(--winner-color),
     0 0 18px var(--winner-glow);
 
-  /* Allow long option names to wrap */
+  
   white-space: normal;
   overflow-wrap: anywhere;
   word-break: break-word;
 
-  /* IMPORTANT: no scrollbar */
+  
   overflow: visible;
 }
 
 
-/* =================================
-   BUBBLES
-================================= */
+
 
 .bubble {
   position: absolute;
@@ -394,9 +378,7 @@
 }
 
 
-/* =================================
-   WAVE
-================================= */
+
 
 .wave-track {
   height: 18px;
@@ -428,9 +410,7 @@
 }
 
 
-/* =================================
-   QUESTION
-================================= */
+
 
 .results-question {
   text-align: center;
@@ -458,9 +438,7 @@
 }
 
 
-/* =================================
-   TABS
-================================= */
+
 
 .tabs-container {
   display: flex;
@@ -511,9 +489,7 @@
 }
 
 
-/* =================================
-   RESULTS
-================================= */
+
 
 .result-list {
   margin-top: 15px;
@@ -645,7 +621,7 @@
 
   line-height: 1.4;
 
-  /* IMPORTANT: show complete option text */
+  
   white-space: normal;
 
   overflow: visible;
@@ -677,7 +653,7 @@
 }
 
 
-/* FIXED VOTE AREA */
+
 
 .result-stat {
   min-width: 85px;
@@ -721,9 +697,7 @@
 }
 
 
-/* =================================
-   MANAGEMENT BUTTONS
-================================= */
+
 
 .feature-actions {
   display: flex;
@@ -755,7 +729,7 @@
 }
 
 
-/* BLUE / TIME */
+
 
 .change-time {
   border:
@@ -785,7 +759,7 @@
 }
 
 
-/* RED / CLOSE */
+
 
 .close-poll {
   border:
@@ -815,7 +789,7 @@
 }
 
 
-/* GREEN / OPEN */
+
 
 .open-poll {
   border:
@@ -853,9 +827,7 @@
 }
 
 
-/* =================================
-   SHARE
-================================= */
+
 
 .share-link-container {
   width: 100%;
@@ -908,9 +880,7 @@
 }
 
 
-/* =================================
-   MESSAGE
-================================= */
+
 
 .results-message {
   text-align: center;
@@ -931,9 +901,7 @@
 }
 
 
-/* =================================
-   EXPIRATION MODAL
-================================= */
+
 
 .expiration-modal-overlay {
   position: fixed;
@@ -1044,9 +1012,7 @@
 }
 
 
-/* =================================
-   MODAL ACTIONS
-================================= */
+
 
 .modal-actions {
   display: flex;
@@ -1131,9 +1097,7 @@
 }
 
 
-/* =================================
-   LOADING / ERROR
-================================= */
+
 
 .results-loading,
 .results-error {
@@ -1146,9 +1110,7 @@
 }
 
 
-/* =================================
-   MOBILE
-================================= */
+
 
 @media (max-width: 520px) {
 
@@ -1178,7 +1140,7 @@
     font-size: 18px;
   }
 
-  /* RESULT ROW */
+  
   .result-item {
     padding: 11px;
     gap: 5px;
@@ -1188,7 +1150,7 @@
     overflow: visible;
   }
 
-  /* OPTION */
+  
   .result-option {
     min-width: 0;
     flex: 1 1 auto;
@@ -1198,7 +1160,7 @@
     font-size: 13px;
   }
 
-  /* PERCENTAGE + VOTE COUNT */
+  
   .result-stat {
     width: 105px !important;
     min-width: 105px !important;
