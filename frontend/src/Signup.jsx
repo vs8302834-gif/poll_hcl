@@ -18,7 +18,7 @@ function Signup() {
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    // Check passwords before contacting backend
+    
     if (password !== confirmPassword) {
       setMessage("Passwords do not match");
       return;
@@ -47,7 +47,7 @@ function Signup() {
 
       setMessage("Account created successfully! 🎉");
 
-      // Go back to login after successful signup
+      
       setTimeout(() => {
         navigate("/");
       }, 1200);
