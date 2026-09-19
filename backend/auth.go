@@ -46,7 +46,7 @@ func Signup(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	// Check whether email already exists
+	
 	var existingUser models.User
 
 	err := userCollection.FindOne(ctx, bson.M{
@@ -58,7 +58,7 @@ func Signup(c *gin.Context) {
 		return
 	}
 
-	// Hash password
+	
 	hash, err := bcrypt.GenerateFromPassword(
 		[]byte(req.Password),
 		bcrypt.DefaultCost,
@@ -122,7 +122,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	// Create JWT
+	
 	claims := jwt.MapClaims{
 		"userId": user.ID.Hex(),
 		"email":  user.Email,
